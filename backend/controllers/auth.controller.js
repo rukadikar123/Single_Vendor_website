@@ -34,6 +34,7 @@ export const register = async (req, res) => {
       httpOnly: true,
       sameSite: "Lax",
       secure: true,
+      maxAge:4*24*60*60*1000
     });
 
     return res.status(200).json({
@@ -81,6 +82,7 @@ export const login = async (req, res) => {
       httpOnly: true,
       sameSite: "Lax",
       secure: true,
+       maxAge:4*24*60*60*1000
     });
 
     return res.status(200).json({
@@ -120,3 +122,24 @@ export const getProfile = async (req, res) => {
     });
   }
 };
+
+
+export const logout=async(req,res)=>{
+  try {
+    res.clearCookie("token",{
+      httpOnly:true,
+      sameSite: "Lax",
+      secure: true,
+    })
+
+    res.status(200).json({
+            success:true,
+            message:"User logged out successfully"
+        })
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: `logout error: ${error.message}`,
+    });
+  }
+}
