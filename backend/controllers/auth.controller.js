@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs";
 export const register = async (req, res) => {
   try {
     const { username, email, password, role } = req.body;
+    
 
     if (!username || !email || !password)
       return res
@@ -19,7 +20,7 @@ export const register = async (req, res) => {
         .json({ success: false, message: "User already exist" });
     }
 
-    const hashedPassword = bcrypt.hash(password, 8);
+    const hashedPassword =await bcrypt.hash(password, 8);
     const newUser = await User.create({
       username,
       email,
@@ -33,14 +34,14 @@ export const register = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       sameSite: "Lax",
-      secure: true,
+      secure: false,
       maxAge:4*24*60*60*1000
     });
 
     return res.status(200).json({
       success: true,
       message: "User registered successfully",
-      newUser,
+      user:newUser,
     });
   } catch (error) {
     return res.status(500).json({
@@ -67,7 +68,7 @@ export const login = async (req, res) => {
       });
     }
 
-    const comparedPassword = bcrypt.compare(password, user.password);
+    const comparedPassword =await bcrypt.compare(password, user.password);
     if (!comparedPassword) {
       return res.status(400).json({
         success: false,
@@ -81,8 +82,8 @@ export const login = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       sameSite: "Lax",
-      secure: true,
-       maxAge:4*24*60*60*1000
+      secure: false,
+       maxAge:4*24*60*60*1000 
     });
 
     return res.status(200).json({
@@ -113,7 +114,7 @@ export const getProfile = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      userProfile
+      user:userProfile
     });
   } catch (error) {
     return res.status(500).json({
@@ -123,6 +124,22 @@ export const getProfile = async (req, res) => {
   }
 };
 
+export const getCurrentUser=async(req,res)=>{
+  try {
+    const user = req.user;
+
+    // Return success response with the user data
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+     res.status(500).json({
+      success: false,
+      message: `Error: ${error.message}`,
+    });
+  }
+}
 
 export const logout=async(req,res)=>{
   try {
