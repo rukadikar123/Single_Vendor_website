@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser'
 import authrouter from './routes/auth.routes.js'
 import productRoutes from './routes/product.routes.js'
 import ordersRoutes from './routes/orders.routes.js'
+import cartRoutes from './routes/cart.routes.js'
 
 const app=express()
 
@@ -25,6 +26,7 @@ app.use(cookieParser())
 app.use('/api/auth', authrouter)
 app.use('/api/products',productRoutes )
 app.use('/api/orders', ordersRoutes)
+app.use("/api/cart", cartRoutes);
 
 mongoDbConnect()
 
