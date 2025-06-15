@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { setUser } from "../redux/authSlice";
+import { setLoading, setUser } from "../redux/authSlice";
 
 const Login = () => {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -25,9 +25,11 @@ const Login = () => {
       console.log(res);
       
       dispatch(setUser(res?.data?.user));
+      dispatch(setLoading(false))
       navigate("/");
     } catch (err) {
       alert(err?.response?.data?.message || "Login failed");
+      dispatch(setLoading(false))
     }
   };
 

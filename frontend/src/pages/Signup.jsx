@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { setUser } from '../redux/authSlice';
+import { setLoading, setUser } from '../redux/authSlice';
 
 function Signup() {
    const [form, setForm] = useState({ username: "", email: "", password: "" });
@@ -21,9 +21,11 @@ function Signup() {
       console.log(res);
       
       dispatch(setUser(res?.data?.user));
+      dispatch(setLoading(false))
       navigate("/");
     } catch (err) {
       alert(err?.response?.data?.message || "Signup failed");
+      dispatch(setLoading(false))
     }
   };
   return (

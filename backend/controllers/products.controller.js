@@ -29,8 +29,8 @@ export const createProduct = async (req, res) => {
     }
 
     let uploadedImage;
-    if (req.file) {
-      uploadedImage = await uploadOnCloudinary(req.file.path);
+    if (req?.file) {
+      uploadedImage = await uploadOnCloudinary(req?.file?.path);
     }
 
     const product = await Product.create({

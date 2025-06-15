@@ -1,18 +1,27 @@
 import { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setLoading } from "../redux/authSlice";
 
 export default function ProductGrid() {
   const [products, setProducts] = useState([]);
 
+  const dispatch = useDispatch();
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_URL}/api/products/all`)
-      .then(res => {
+    axios
+      .get(`${import.meta.env.VITE_URL}/api/products/all`)
+      .then((res) => {
         console.log(res);
-        
-        setProducts(res?.data?.products)
-    })
-      .catch(err => console.log(err));
+
+        setProducts(res?.data?.products);
+        dispatch(setLoading(false));
+      })
+      .catch((err) => {
+         dispatch(setLoading(false));
+        console.log(err)
+
+      });
   }, []);
 
   return (

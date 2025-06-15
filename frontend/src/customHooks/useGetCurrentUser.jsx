@@ -10,7 +10,7 @@ const useGetCurrentUser = () => {
   useEffect(() => {
     // Define async function to fetch current user data from backend
     const fetchUser = async () => {
-        dispatch(setLoading(true))
+      dispatch(setLoading(true));
       try {
         // Make GET request to backend API to get current user info
         let result = await axios.get(
@@ -19,9 +19,11 @@ const useGetCurrentUser = () => {
         );
         console.log("getcurrent user data:", result);
         dispatch(setUser(result?.data?.user)); // Dispatch action to set user data in redux store
-        dispatch(setLoading(false))
       } catch (error) {
+        dispatch(setUser(null));
         console.log(error);
+      } finally {
+        dispatch(setLoading(false)); // stop loading regardless
       }
     };
     // Call the fetchUser function when hook is first used (component mounts)
