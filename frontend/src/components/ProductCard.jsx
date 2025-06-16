@@ -9,7 +9,7 @@ export default function ProductCard({ product }) {
     try {
 
         const res=await axios.post(`${import.meta.env.VITE_URL}/api/cart/add`,{productId: product._id},{withCredentials:true})
-
+      alert("cart added successfully")
         dispatch(setCart(res?.data?.cart))
 
     } catch (error) {
@@ -22,7 +22,7 @@ export default function ProductCard({ product }) {
       <img
         src={product.image}
         alt={product.name}
-        className="w-full h-48 object-cover rounded-lg"
+        className="w-full h-48 object-contain bg-white rounded-lg"
       />
       <h2 className="mt-2 font-semibold text-lg">{product.name}</h2>
       <p className="text-gray-500 text-sm">{product.description}</p>

@@ -6,7 +6,7 @@ import { clearCart } from "../redux/cartSlice";
 
 export default function Navbar() {
   const cartItems = useSelector((state) => state?.cart?.items);
-  const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const cartCount = cartItems?.reduce((sum, item) => sum + item.quantity, 0);
   const user = useSelector((state) => state?.auth?.user);
 
   const navigate = useNavigate();

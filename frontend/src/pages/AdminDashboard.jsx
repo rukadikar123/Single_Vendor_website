@@ -8,6 +8,7 @@ import Navbar from "../components/Navbar";
 
 function AdminDashboard() {
   const dispatch = useDispatch();
+  const [orders, setOrders] = useState([]);
   const { products } = useSelector((state) => state.product);
   const [form, setForm] = useState({
     name: "",
@@ -67,7 +68,7 @@ function AdminDashboard() {
         );
       }
 
-      setForm({ name: "", description: "", price: "", image: null });
+      setForm({ name: "", description: "", price: "", image: null,stock:"" });
       setEditId(null);
       fetchProducts();
     } catch (error) {
@@ -92,12 +93,30 @@ function AdminDashboard() {
       name: product.name,
       description: product.description,
       price: product.price,
+      stock:product.stock,
       image: null, // for security, do not prefill file input
     });
   };
 
+  const fetchOrders = async () => {
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_URL}/api/orders/all`,
+        {
+          withCredentials: true,
+        }
+      );
+      console.log("admin orders",res?.data);
+      
+      setOrders(res?.data?.orders);
+    } catch (error) {
+      console.error("Fetch orders error:", error.message);
+    }
+  };
+
   useEffect(() => {
     fetchProducts();
+    fetchOrders();
   }, []);
 
   return (
@@ -184,6 +203,35 @@ function AdminDashboard() {
                   Delete
                 </button>
               </div>
+            </div>
+          ))}
+        </div>
+        <h2 className="text-xl font-bold mt-10 mb-4">All Orders</h2>
+        <div className="space-y-4">
+          {orders?.map((order) => (
+            <div key={order?._id} className="border p-4 rounded shadow-sm">
+              <p>
+                <strong>User:</strong> {order?.user?.username} (
+                {order?.user?.email})
+              </p>
+              <p>
+                <strong>Status:</strong> {order?.status}
+              </p>
+              <p>
+                <strong>Total:</strong> ₹{order?.total}
+              </p>
+              <p>
+                <strong>Created:</strong>{" "}
+                {new Date(order?.createdAt).toLocaleString()}
+              </p>
+
+              <ul className="mt-2 list-disc list-inside">
+                {order?.products?.map((item, i) => (
+                  <li key={i}>
+                    {item?.product?.name} - Qty: {item?.quantity}
+                  </li>
+                ))}
+              </ul>
             </div>
           ))}
         </div>
