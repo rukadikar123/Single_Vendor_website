@@ -1,5 +1,11 @@
 # Single Vendor Website - Frontend
 
+##dummy auth data:
+
+### for admin :
+#### login id:Rkd@g.com
+#### password: Rkd@1234
+
 [DeployedLink](https://single-vendor-website.onrender.com)
 
 ## Features
