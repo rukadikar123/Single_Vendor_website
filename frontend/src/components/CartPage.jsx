@@ -41,7 +41,7 @@ export default function CartPage() {
      try {
     const res = await axios.post(
       `${import.meta.env.VITE_URL}/api/orders`,
-      {}, // If total is calculated server-side, body can be empty
+      {},
       { withCredentials: true }
     );
     alert("✅ Order placed successfully!");
@@ -49,7 +49,7 @@ export default function CartPage() {
     navigate("/my-orders"); // Redirect to orders page
   } catch (error) {
     console.error("Checkout error:", error.message);
-    alert("❌ Failed to place order. Try again.");
+    alert(" Failed to place order. Try again.");
   }
   };
 
@@ -87,7 +87,7 @@ export default function CartPage() {
                 item?._id ??
                 (item?.product?._id && item?.quantity
                   ? `${item.product._id}-${item.quantity}`
-                  : `fallback-${index}`); // <-- guaranteed fallback
+                  : `fallback-${index}`); 
 
               return (
                 <div
